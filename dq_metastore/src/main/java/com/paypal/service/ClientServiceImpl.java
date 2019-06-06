@@ -20,7 +20,7 @@ public class ClientServiceImpl implements ClientService {
 	ClientRepository clientRepository ;
 
     @Override
-    public List<Client> getMeasureDetails()  {
+    public List<Client> getClientDetails()  {
         try {
         	
         	//List<Measure> measure = measureRepository.findAll();

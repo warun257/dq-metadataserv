@@ -11,14 +11,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.paypal.model.Client;
 import com.paypal.model.Measure;
 import com.paypal.model.RuleSet;
+import com.paypal.service.ClientService;
 import com.paypal.service.MeasureService;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/ruleservice")
+@RequestMapping(value = "/api/v1/ruleservice")
 public class RuleController {
 
     @Autowired
@@ -66,6 +68,49 @@ public class RuleController {
 				: new ResponseEntity<>("ERROR WHILE SUBMITTING RECORD PLEASE TRY AGAIN", HttpStatus.BAD_REQUEST);
 	}
 
-    
-    
+
+
+	// For Client
+
+    @Autowired
+    ClientService clientService ;
+
+    @ApiOperation(value="Client Information",response= Client.class)
+    @GetMapping(value = "/rule/getMeasureDetails",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getClientInfo() {
+
+        List<Client> clients = clientService.getClientDetails();
+       // System.out.println("hmm"+measure.size());
+        return clients != null ? new ResponseEntity<>(clients, HttpStatus.ACCEPTED)
+                : new ResponseEntity<>("Something went wrong ", HttpStatus.BAD_REQUEST);
+
+    }
+
+    @ApiOperation(value="Client Information By Id",response= Client.class)
+    @GetMapping(value = "/rule/getMeasureDetailsById",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getClientInfoById(@PathVariable(name = "id") long id) {
+
+        Client client = clientService.getClientDetailById(id);
+        //System.out.println("hmm"+measure.size());
+        return client != null ? new ResponseEntity<>(client, HttpStatus.ACCEPTED)
+                : new ResponseEntity<>("Something went wrong ", HttpStatus.BAD_REQUEST);
+
+    }
+
+    @ApiOperation(value="Meaure Information",response= Client.class)
+    @PostMapping(value = "/rule/postMeasureInfo", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> postMeasureInfo(@RequestBody Client client)  {
+        return clientService.postClient(client) != null
+                ? new ResponseEntity<>(client.getClientName() + " created Successfully", HttpStatus.ACCEPTED)
+                : new ResponseEntity<>("ERROR WHILE SUBMITTING RECORD PLEASE TRY AGAIN", HttpStatus.BAD_REQUEST);
+    }
+
+
+
+
+
+
+
+
+
 }

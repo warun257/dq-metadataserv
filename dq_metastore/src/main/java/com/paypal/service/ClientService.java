@@ -7,7 +7,7 @@ import com.paypal.model.Measure;
 
 public interface ClientService {
 
-    public List<Client> getMeasureDetails();
+    public List<Client> getClientDetails();
 
     public Client getClientDetailById(Long id);
 
